@@ -8,15 +8,19 @@ package persistencias;
  *
  * @author fidel_li91s8o
  */
-
 import modelo.Producto;
-
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class ExportadorTXT {
 
+    /**
+     * Exporta la lista de productos a un archivo de texto.
+     * @param ruta ruta del archivo a crear
+     * @param lista lista de productos a exportar
+     * @throws IOException si ocurre un error de escritura
+     */
     public static void exportar(String ruta, List<Producto> lista) throws IOException {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ruta))) {
@@ -28,6 +32,7 @@ public class ExportadorTXT {
             writer.write("----------------------------------------");
             writer.newLine();
 
+            // Escribe cada producto usando su toString()
             for (Producto p : lista) {
                 writer.write(p.toString());
                 writer.newLine();

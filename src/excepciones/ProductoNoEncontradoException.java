@@ -9,6 +9,10 @@ package excepciones;
  * @author fidel_li91s8o
  */
 
+/**
+ * Excepción personalizada que se lanza cuando no se encuentra un producto.
+ * Se usa en GestionProductos.
+ */
 public class ProductoNoEncontradoException extends RuntimeException {
 
     public ProductoNoEncontradoException(String mensaje) {

@@ -13,6 +13,10 @@ import java.util.Iterator;
 import java.util.List;
 import modelo.Producto;
 
+/**
+ * Iterador personalizado para la lista de productos.
+ * Permite usar foreach sobre GestionProductos.
+ */
 public class ProductoIterator implements Iterator<Producto> {
 
     private List<Producto> lista;
@@ -24,11 +28,11 @@ public class ProductoIterator implements Iterator<Producto> {
 
     @Override
     public boolean hasNext() {
-        return posicion < lista.size();
+        return posicion < lista.size(); // true si hay más elementos
     }
 
     @Override
     public Producto next() {
-        return lista.get(posicion++);
+        return lista.get(posicion++); // devuelve el siguiente elemento
     }
 }

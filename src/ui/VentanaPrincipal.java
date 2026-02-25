@@ -37,44 +37,37 @@ public class VentanaPrincipal extends BorderPane {
         actualizarTabla();
     }
 
+    // Crea toda la interfaz gráfica: tabla, botones y filtro
     private void crearUI() {
 
+        // Tabla de productos
         tabla = new TableView<>(datos);
 
         TableColumn<Producto, Integer> colId = new TableColumn<>("ID");
-        colId.setCellValueFactory(c ->
-                new javafx.beans.property.SimpleIntegerProperty(c.getValue().getId()).asObject());
+        colId.setCellValueFactory(c -> new javafx.beans.property.SimpleIntegerProperty(c.getValue().getId()).asObject());
 
         TableColumn<Producto, String> colNombre = new TableColumn<>("Nombre");
-        colNombre.setCellValueFactory(c ->
-                new javafx.beans.property.SimpleStringProperty(c.getValue().getNombre()));
+        colNombre.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getNombre()));
 
         TableColumn<Producto, Double> colPrecio = new TableColumn<>("Precio");
-        colPrecio.setCellValueFactory(c ->
-                new javafx.beans.property.SimpleDoubleProperty(c.getValue().getPrecio()).asObject());
+        colPrecio.setCellValueFactory(c -> new javafx.beans.property.SimpleDoubleProperty(c.getValue().getPrecio()).asObject());
 
         TableColumn<Producto, Integer> colStock = new TableColumn<>("Stock");
-        colStock.setCellValueFactory(c ->
-                new javafx.beans.property.SimpleIntegerProperty(c.getValue().getStock()).asObject());
+        colStock.setCellValueFactory(c -> new javafx.beans.property.SimpleIntegerProperty(c.getValue().getStock()).asObject());
 
         TableColumn<Producto, String> colTipo = new TableColumn<>("Tipo");
         colTipo.setCellValueFactory(c -> {
             Producto p = c.getValue();
-            if (p instanceof ProductoElectronico) {
-                return new javafx.beans.property.SimpleStringProperty("Electrónico");
-            } else if (p instanceof ProductoAlimenticio) {
-                return new javafx.beans.property.SimpleStringProperty("Alimenticio");
-            } else if (p instanceof ProductoRopa) {
-                return new javafx.beans.property.SimpleStringProperty("Ropa");
-            } else {
-                return new javafx.beans.property.SimpleStringProperty("Desconocido");
-            }
+            if (p instanceof ProductoElectronico) return new javafx.beans.property.SimpleStringProperty("Electrónico");
+            else if (p instanceof ProductoAlimenticio) return new javafx.beans.property.SimpleStringProperty("Alimenticio");
+            else if (p instanceof ProductoRopa) return new javafx.beans.property.SimpleStringProperty("Ropa");
+            else return new javafx.beans.property.SimpleStringProperty("Desconocido");
         });
 
         tabla.getColumns().addAll(colId, colNombre, colPrecio, colStock, colTipo);
+        tabla.setPrefSize(600, 500); // tamaño de la tabla
 
-        // ================= BOTONES =================
-
+        // BOTONES
         Button btnAgregar = new Button("Agregar");
         btnAgregar.setOnAction(e -> mostrarFormularioAgregar());
 
@@ -105,14 +98,9 @@ public class VentanaPrincipal extends BorderPane {
         Button btnCargar = new Button("Cargar DAT");
         btnCargar.setOnAction(e -> {
             try {
-                List<Producto> productosCargados =
-                        PersistenciaBinaria.cargar("productos.dat");
-
-                // 🔥 CORRECCIÓN IMPORTANTE
+                List<Producto> productosCargados = PersistenciaBinaria.cargar("productos.dat");
                 gestion.reemplazarLista(productosCargados);
-
                 actualizarTabla();
-
             } catch (IOException | ClassNotFoundException ex) {
                 ex.printStackTrace();
             }
@@ -127,6 +115,7 @@ public class VentanaPrincipal extends BorderPane {
             }
         });
 
+        // FILTRO
         TextField txtFiltro = new TextField();
         txtFiltro.setPromptText("Filtrar por nombre");
 
@@ -136,20 +125,12 @@ public class VentanaPrincipal extends BorderPane {
             datos.setAll(gestion.filtrarPorNombre(texto));
         });
 
-        VBox botones = new VBox(10,
-                txtFiltro,
-                btnFiltrar,
-                btnAgregar,
-                btnEliminar,
-                btnOrdenNombre,
-                btnOrdenStock,
-                btnGuardar,
-                btnCargar,
-                btnExportarTXT
-        );
-
+        // VBox para botones y filtro
+        VBox botones = new VBox(10, txtFiltro, btnFiltrar, btnAgregar, btnEliminar, btnOrdenNombre, btnOrdenStock, btnGuardar, btnCargar, btnExportarTXT);
         botones.setPadding(new Insets(10));
+        botones.setPrefWidth(200);
 
+        // Agregar al BorderPane
         setCenter(tabla);
         setRight(botones);
     }
@@ -185,27 +166,12 @@ public class VentanaPrincipal extends BorderPane {
                 String tipo = comboTipo.getValue();
 
                 Producto nuevo;
-
                 if (tipo.equals("Electrónico")) {
-                    nuevo = new ProductoElectronico(
-                            id, nombre, precio, stock,
-                            Categoria.ELECTRONICA,
-                            12, 220
-                    );
+                    nuevo = new ProductoElectronico(id, nombre, precio, stock, Categoria.ELECTRONICA, 12, 220);
                 } else if (tipo.equals("Alimenticio")) {
-                    nuevo = new ProductoAlimenticio(
-                            id, nombre, precio, stock,
-                            Categoria.ALIMENTOS,
-                            LocalDate.of(2026, 1, 1),
-                            false
-                    );
+                    nuevo = new ProductoAlimenticio(id, nombre, precio, stock, Categoria.ALIMENTOS, LocalDate.of(2026,1,1), false);
                 } else {
-                    nuevo = new ProductoRopa(
-                            id, nombre, precio, stock,
-                            Categoria.ROPA,
-                            "M",
-                            "Algodón"
-                    );
+                    nuevo = new ProductoRopa(id, nombre, precio, stock, Categoria.ROPA, "M", "Algodón");
                 }
 
                 gestion.crear(nuevo);
@@ -219,15 +185,7 @@ public class VentanaPrincipal extends BorderPane {
 
         btnCancelar.setOnAction(e -> ventana.close());
 
-        VBox layout = new VBox(10,
-                txtNombre,
-                txtPrecio,
-                txtStock,
-                comboTipo,
-                btnGuardar,
-                btnCancelar
-        );
-
+        VBox layout = new VBox(10, txtNombre, txtPrecio, txtStock, comboTipo, btnGuardar, btnCancelar);
         layout.setPadding(new Insets(15));
 
         ventana.setScene(new Scene(layout, 300, 300));
@@ -236,9 +194,7 @@ public class VentanaPrincipal extends BorderPane {
     }
 
     private void eliminarProducto() {
-
         Producto seleccionado = tabla.getSelectionModel().getSelectedItem();
-
         if (seleccionado != null) {
             gestion.eliminar(seleccionado.getId());
             actualizarTabla();

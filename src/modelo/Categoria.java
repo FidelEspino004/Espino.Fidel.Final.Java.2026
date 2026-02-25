@@ -10,7 +10,7 @@ package modelo;
  */
 
 public enum Categoria {
-    ALIMENTOS,
-    ELECTRONICA,
-    ROPA,
+    ALIMENTOS,    
+    ELECTRONICA,  
+    ROPA          
 }

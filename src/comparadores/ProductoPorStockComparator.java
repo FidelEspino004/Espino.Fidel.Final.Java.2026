@@ -12,10 +12,14 @@ package comparadores;
 import modelo.Producto;
 import java.util.Comparator;
 
+/**
+ * Comparator para ordenar productos por cantidad de stock.
+ */
 public class ProductoPorStockComparator implements Comparator<Producto> {
 
     @Override
     public int compare(Producto p1, Producto p2) {
+        // Compara la cantidad de stock de ambos productos
         return Integer.compare(p1.getStock(), p2.getStock());
     }
 }
