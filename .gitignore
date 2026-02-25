@@ -1,0 +1,17 @@
+# Archivos compilados
+*.class
+*.jar
+
+# Carpetas de compilación de NetBeans
+/build/
+/dist/
+/nbproject/private/
+/out/
+
+# Archivos de configuración del IDE
+/.idea/
+/*.iml
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
